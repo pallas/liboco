@@ -12,9 +12,12 @@ override CXXFLAGS += $(DEBUG) -MD -MP
 COMMON := \
 	context \
 	demangler \
+	file_descriptor \
+	reactor \
 	scheduler \
 	stack \
 	task \
+	trigger \
 	#
 
 DEPENDS = $(COMMON:=.d)
