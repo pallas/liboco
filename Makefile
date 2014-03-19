@@ -15,6 +15,8 @@ COMMON := \
 	file_descriptor \
 	reactor \
 	scheduler \
+	signal_set \
+	signal_suppressor \
 	stack \
 	task \
 	trigger \
