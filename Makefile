@@ -9,6 +9,10 @@ override LDFLAGS += -lstdc++
 override CFLAGS += $(DEBUG) -MD -MP
 override CXXFLAGS += $(DEBUG) -MD -MP
 
+PROGRAMS := \
+	open_fds \
+	#
+
 COMMON := \
 	context \
 	demangler \
@@ -22,15 +26,17 @@ COMMON := \
 	trigger \
 	#
 
-DEPENDS = $(COMMON:=.d)
+DEPENDS = $(PROGRAMS:=.d) $(COMMON:=.d)
 -include $(DEPENDS)
 
-OBJECTS = $(COMMON:=.o)
+OBJECTS = $(PROGRAMS:=.o) $(COMMON:=.o)
 
-all: $(OBJECTS)
+$(PROGRAMS) : %: %.o
+
+all: $(PROGRAMS) $(OBJECTS)
 
 .PHONY: clean
 clean:
-	rm -rf $(OBJECTS) $(DEPENDS)
+	rm -rf $(PROGRAMS) $(OBJECTS) $(DEPENDS)
 
 #
