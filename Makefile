@@ -17,6 +17,8 @@ COMMON := \
 	context \
 	demangler \
 	file_descriptor \
+	killable \
+	killer \
 	reactor \
 	scheduler \
 	signal_set \
