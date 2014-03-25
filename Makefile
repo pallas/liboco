@@ -11,6 +11,8 @@ override CXXFLAGS += $(DEBUG) -MD -MP
 
 PROGRAMS := \
 	open_fds \
+	rfc862c \
+	rfc862d \
 	#
 
 COMMON := \
@@ -42,9 +44,9 @@ DEPENDS = $(PROGRAMS:=.d) $(COMMON:=.d)
 
 OBJECTS = $(PROGRAMS:=.o) $(COMMON:=.o)
 
-$(PROGRAMS) : %: %.o
+$(PROGRAMS) : %: %.o $(COMMON:=.o)
 
-all: $(PROGRAMS) $(OBJECTS)
+all: $(PROGRAMS)
 
 .PHONY: clean
 clean:
