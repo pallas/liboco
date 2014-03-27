@@ -15,6 +15,7 @@ PROGRAMS := \
 
 COMMON := \
 	acceptor \
+	connector \
 	context \
 	core \
 	demangler \
