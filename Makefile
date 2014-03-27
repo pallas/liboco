@@ -14,6 +14,7 @@ PROGRAMS := \
 	#
 
 COMMON := \
+	acceptor \
 	context \
 	core \
 	demangler \
