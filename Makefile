@@ -18,13 +18,17 @@ COMMON := \
 	core \
 	demangler \
 	file_descriptor \
+	inet6_address \
+	inet_address \
 	killable \
 	killer \
+	local_address \
 	reactor \
 	scheduler \
 	signal_set \
 	signal_suppressor \
 	simple_task \
+	socket_address \
 	stack \
 	task \
 	trigger \
