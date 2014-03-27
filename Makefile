@@ -15,6 +15,7 @@ PROGRAMS := \
 
 COMMON := \
 	context \
+	core \
 	demangler \
 	file_descriptor \
 	killable \
