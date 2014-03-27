@@ -27,6 +27,7 @@ COMMON := \
 	local_address \
 	reactor \
 	scheduler \
+	signaler \
 	signal_set \
 	signal_suppressor \
 	simple_task \
