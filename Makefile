@@ -24,6 +24,7 @@ COMMON := \
 	scheduler \
 	signal_set \
 	signal_suppressor \
+	simple_task \
 	stack \
 	task \
 	trigger \
