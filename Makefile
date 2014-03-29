@@ -20,6 +20,7 @@ COMMON := \
 	connector \
 	context \
 	core \
+	counter \
 	demangler \
 	file_descriptor \
 	inet6_address \
