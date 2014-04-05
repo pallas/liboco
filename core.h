@@ -53,6 +53,8 @@ public:
 
   static bool shutdown(trigger &, bool read, bool write, bool flush=true);
 
+  static bool become(const char *);
+
 private:
   unsigned events_;
   unsigned schedules_;

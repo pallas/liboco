@@ -10,7 +10,11 @@
 #include "file_descriptor.h"
 #include "signal_suppressor.h"
 
+#include <pwd.h>
+#include <grp.h>
+
 #include <cassert>
+#include <cstdlib>
 #include <unistd.h>
 #include <sys/socket.h>
 
@@ -195,6 +199,24 @@ core::shutdown(trigger & t, bool read, bool write, bool flush) {
   }
 
   return errno == ENOTCONN;
+}
+
+bool
+core::become(const char * whom) {
+  char buf[65536];
+  struct passwd p, *r;
+  TRY(getpwnam_r, whom, &p, buf, sizeof buf, &r);
+  if (r != &p)
+    return false;
+
+  uid_t u = getuid();
+  gid_t g = getgid();
+
+  TRY(setgid, p.pw_gid);
+  TRY(initgroups, whom, p.pw_gid);
+  TRY(setuid, p.pw_uid);
+
+  return setgid(g) < 0 && setuid(u) < 0;
 }
 
 void
