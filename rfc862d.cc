@@ -66,6 +66,9 @@ int main(int argc, char *argv[]) {
   acceptor<echoer> *a = new acceptor<echoer>(inet_address(7));
   sk.target(*a);
 
+  if (!core::become("nobody"))
+    return EXIT_FAILURE;
+
   c.own(a).react();
 
   return EXIT_SUCCESS;
