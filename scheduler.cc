@@ -98,6 +98,7 @@ scheduler::yield() {
   assert(!todo.empty());
 
   ucontext_t current;
+  current.uc_link = NULL;
   todo.enqueue(&current);
   TRY(swapcontext, &current, todo.dequeue());
 }

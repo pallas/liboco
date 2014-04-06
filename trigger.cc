@@ -9,6 +9,7 @@
 trigger::trigger(int fd)
   : fd_(fd)
 {
+  uc_link = NULL;
   ev_.events = EPOLLONESHOT;
   ev_.data.ptr = NULL;
   TRY_ERR(EPERM, epoll_ctl, reactor::instance().fd, EPOLL_CTL_ADD, fd_, &ev_);
@@ -18,6 +19,7 @@ trigger::trigger(int fd)
 trigger::trigger(const file_descriptor & fd)
   : fd_(fd)
 {
+  uc_link = NULL;
   ev_.events = EPOLLONESHOT;
   ev_.data.ptr = NULL;
   TRY_ERR(EPERM, epoll_ctl, reactor::instance().fd, EPOLL_CTL_ADD, fd_, &ev_);

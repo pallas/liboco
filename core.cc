@@ -76,6 +76,7 @@ core::schedule() {
   ++core::instance().schedules_;
 
   ucontext_t c;
+  c.uc_link = NULL;
   queue::instance().enqueue(&c);
   scheduler::instance().defer(&c);
 }
