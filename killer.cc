@@ -39,4 +39,6 @@ killer::mark::mark(killable & kk)
   , m(NULL)
 { }
 
+killer::mark::~mark() { assert(!m); }
+
 //

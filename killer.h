@@ -19,6 +19,8 @@ public:
 private:
   struct mark {
     mark(killable &);
+    ~mark();
+
     killable & k;
     struct mark * m;
   };
