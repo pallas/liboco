@@ -15,6 +15,7 @@ public:
   bool empty() const { return !head; }
 
   intrusive_stack & push(T* t) {
+    assert(NULL == t->*link);
     t->*link = head;
     head = t;
     return *this;
@@ -29,6 +30,7 @@ public:
     assert(!empty());
     T* t = head;
     head = t->*link;
+    t->*link = NULL;
     return t;
   }
 

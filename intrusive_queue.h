@@ -15,7 +15,9 @@ public:
   bool empty() const { return !head; }
 
   intrusive_queue & enqueue(T* t) {
-    assert(!empty() || &head == tail);
+    assert(NULL == t->*link);
+    if (empty())
+      assert(&head == tail);
     *tail = t;
     tail = &(t->*link);
     *tail = NULL;
@@ -35,6 +37,7 @@ public:
     if (!(head = head->*link))
       tail = &head;
 
+    t->*link = NULL;
     return t;
   }
 
