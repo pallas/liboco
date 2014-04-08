@@ -97,8 +97,7 @@ void
 scheduler::yield() {
   assert(!todo.empty());
 
-  ucontext_t current;
-  current.uc_link = NULL;
+  basic_context current;
   todo.enqueue(&current);
   TRY(swapcontext, &current, todo.dequeue());
 }
@@ -114,13 +113,13 @@ scheduler::active() const {
 }
 
 void
-scheduler::defer(ucontext_t * c) {
+scheduler::defer(basic_context * c) {
   assert(!todo.empty());
   TRY(swapcontext, c, todo.dequeue());
 }
 
 void
-scheduler::refer(ucontext_t * c) {
+scheduler::refer(basic_context * c) {
   todo.enqueue(c);
 }
 

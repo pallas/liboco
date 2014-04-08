@@ -9,7 +9,6 @@
 trigger::trigger(int fd)
   : fd_(fd)
 {
-  uc_link = NULL;
   ev_.events = EPOLLONESHOT;
   ev_.data.ptr = NULL;
   TRY_ERR(EPERM, epoll_ctl, reactor::instance().fd, EPOLL_CTL_ADD, fd_, &ev_);
@@ -19,7 +18,6 @@ trigger::trigger(int fd)
 trigger::trigger(const file_descriptor & fd)
   : fd_(fd)
 {
-  uc_link = NULL;
   ev_.events = EPOLLONESHOT;
   ev_.data.ptr = NULL;
   TRY_ERR(EPERM, epoll_ctl, reactor::instance().fd, EPOLL_CTL_ADD, fd_, &ev_);
@@ -34,49 +32,49 @@ trigger::~trigger() {
 int trigger::fd() const { return fd_; }
 int trigger::dup() const { return file_descriptor::dup(fd_); }
 
-ucontext_t *
+basic_context *
 trigger::wait_for_read() {
   if (!armed())
     arm();
   ev_.events = EPOLLRDHUP|EPOLLIN|EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
-  return static_cast<ucontext_t*>(this);
+  return static_cast<basic_context*>(this);
 }
 
-ucontext_t *
+basic_context *
 trigger::wait_for_write() {
   if (!armed())
     arm();
   ev_.events = EPOLLOUT|EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
-  return static_cast<ucontext_t*>(this);
+  return static_cast<basic_context*>(this);
 }
 
-ucontext_t *
+basic_context *
 trigger::wait_for_error() {
   if (!armed())
     arm();
   ev_.events = EPOLLRDHUP|EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
-  return static_cast<ucontext_t*>(this);
+  return static_cast<basic_context*>(this);
 }
 
-ucontext_t *
+basic_context *
 trigger::wait_for_nothing() {
   if (armed())
     disarm();
   ev_.events = EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
-  return static_cast<ucontext_t*>(this);
+  return static_cast<basic_context*>(this);
 }
 
-ucontext_t *
+basic_context *
 trigger::wait_for_anything() {
   if (!armed())
     arm();
   ev_.events = EPOLLRDHUP|EPOLLIN|EPOLLOUT|EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
-  return static_cast<ucontext_t*>(this);
+  return static_cast<basic_context*>(this);
 }
 
 bool
@@ -91,11 +89,11 @@ trigger::writable() const {
   return ev_.events & EPOLLOUT;
 }
 
-ucontext_t *
+basic_context *
 trigger::fire() {
   assert(armed());
   disarm();
-  return static_cast<ucontext_t*>(this);
+  return static_cast<basic_context*>(this);
 }
 
 void

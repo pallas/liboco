@@ -27,8 +27,8 @@ public:
   bool done() const;
   bool active() const;
 
-  void defer(ucontext_t *);
-  void refer(ucontext_t *);
+  void defer(basic_context *);
+  void refer(basic_context *);
   void transfer(context::queue &);
 
 private:

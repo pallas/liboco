@@ -9,7 +9,6 @@ context::context() {
   ucontext_t* self = static_cast<ucontext_t*>(this);
   TRY(getcontext, self);
   stack::init(&self->uc_stack);
-  self->uc_link = NULL;
 }
 
 context::~context() {

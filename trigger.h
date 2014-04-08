@@ -3,11 +3,11 @@
 
 #include "do_not_copy.h"
 #include "file_descriptor.h"
+#include "context.h"
 
-#include <ucontext.h>
 #include <sys/epoll.h>
 
-class trigger : public ucontext_t {
+class trigger : public basic_context {
 public:
   explicit trigger(int); // takes ownership
   trigger(const file_descriptor &); // dups
@@ -16,17 +16,17 @@ public:
   int fd() const;
   int dup() const;
 
-  ucontext_t * wait_for_read();
-  ucontext_t * wait_for_write();
-  ucontext_t * wait_for_error();
+  basic_context * wait_for_read();
+  basic_context * wait_for_write();
+  basic_context * wait_for_error();
 
-  ucontext_t * wait_for_nothing();
-  ucontext_t * wait_for_anything();
+  basic_context * wait_for_nothing();
+  basic_context * wait_for_anything();
 
   bool readable() const;
   bool writable() const;
 
-  ucontext_t * fire();
+  basic_context * fire();
 
   bool armed() const;
 

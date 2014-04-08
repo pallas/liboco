@@ -8,7 +8,11 @@
 #include <stdint.h>
 #include <ucontext.h>
 
-class context : public ucontext_t, public do_not_copy {
+struct basic_context : public ucontext_t {
+  basic_context() { uc_link = NULL; }
+};
+
+class context : public basic_context, public do_not_copy {
 public:
   context();
   ~context();
