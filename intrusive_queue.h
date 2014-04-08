@@ -2,11 +2,17 @@
 #define INTRUSIVE_QUEUE_H
 
 #include "do_not_copy.h"
+#include "intrusive_link.h"
 
 #include <cassert>
 #include <cstddef>
 
-template <class T, T* T::*link>
+template <class T>
+struct intrusive_queue_link : public intrusive_link<T> {
+  typedef intrusive_queue_link type;
+};
+
+template <class T, typename intrusive_queue_link<T>::type T::*link>
 class intrusive_queue : public do_not_copy {
 public:
   intrusive_queue() : head(NULL), tail(&head) { }
@@ -15,11 +21,11 @@ public:
   bool empty() const { return !head; }
 
   intrusive_queue & enqueue(T* t) {
-    assert(NULL == t->*link);
+    assert(NULL == (t->*link).p);
     if (empty())
       assert(&head == tail);
     *tail = t;
-    tail = &(t->*link);
+    tail = &(t->*link).p;
     *tail = NULL;
     assert(!empty());
     return *this;
@@ -34,10 +40,10 @@ public:
     assert(!empty());
     T* t = head;
 
-    if (!(head = head->*link))
+    if (!(head = (head->*link).p))
       tail = &head;
 
-    t->*link = NULL;
+    (t->*link).p = NULL;
     return t;
   }
 

@@ -19,13 +19,12 @@ public:
 private:
   struct mark {
     mark(killable &);
-    ~mark();
 
     killable & k;
-    struct mark * m;
+    intrusive_stack_link<mark>::type link;
   };
 
-  intrusive_stack<mark, &mark::m> hitlist;
+  intrusive_stack<mark, &mark::link> hitlist;
 };
 
 #endif//KILLER_H

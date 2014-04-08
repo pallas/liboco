@@ -2,11 +2,17 @@
 #define INTRUSIVE_STACK_H
 
 #include "do_not_copy.h"
+#include "intrusive_link.h"
 
 #include <cassert>
 #include <cstddef>
 
-template <class T, T* T::*link>
+template <class T>
+struct intrusive_stack_link : public intrusive_link<T> {
+  typedef intrusive_stack_link type;
+};
+
+template <class T, typename intrusive_stack_link<T>::type T::*link>
 class intrusive_stack : public do_not_copy {
 public:
   intrusive_stack() : head(NULL) { }
@@ -15,8 +21,8 @@ public:
   bool empty() const { return !head; }
 
   intrusive_stack & push(T* t) {
-    assert(NULL == t->*link);
-    t->*link = head;
+    assert(NULL == (t->*link).p);
+    (t->*link).p = head;
     head = t;
     return *this;
   }
@@ -29,8 +35,8 @@ public:
   T* pop() {
     assert(!empty());
     T* t = head;
-    head = t->*link;
-    t->*link = NULL;
+    head = (t->*link).p;
+    (t->*link).p = NULL;  
     return t;
   }
 
