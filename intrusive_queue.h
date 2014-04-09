@@ -48,6 +48,7 @@ public:
   }
 
   intrusive_queue & chain(intrusive_queue & that) {
+    assert(this != &that);
     assert(!that.empty());
     *tail = that.head;
     tail = that.tail;
