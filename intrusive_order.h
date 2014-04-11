@@ -8,9 +8,14 @@
 #include <cstddef>
 #include <algorithm>
 
-template <class T>
-struct intrusive_order_link : public intrusive_link<T> {
+template <class X>
+struct intrusive_order_link : private intrusive_link<X> {
   typedef intrusive_order_link type;
+  template <class T, typename intrusive_order_link<T>::type T::*link,
+            bool (T::*predicate)(const T &) const>
+    friend class intrusive_order;
+
+  bool bound() const { return intrusive_link<X>::p; }
 };
 
 template <class T, typename intrusive_order_link<T>::type T::*link,

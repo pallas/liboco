@@ -7,9 +7,13 @@
 #include <cassert>
 #include <cstddef>
 
-template <class T>
-struct intrusive_stack_link : public intrusive_link<T> {
+template <class X>
+struct intrusive_stack_link : private intrusive_link<X> {
   typedef intrusive_stack_link type;
+  template <class T, typename intrusive_stack_link<T>::type T::*link>
+    friend class intrusive_stack;
+
+  bool bound() const { return intrusive_link<X>::p; }
 };
 
 template <class T, typename intrusive_stack_link<T>::type T::*link>
