@@ -2,7 +2,7 @@ default: all
 
 DEBUG ?= -g -ggdb -DDEBUG
 ifeq ($(DEBUG),)
-	override DEBUG := -DNDEBUG
+	override DEBUG := -DNDEBUG -O2
 endif
 
 override LDFLAGS += -lstdc++
