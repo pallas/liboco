@@ -40,7 +40,7 @@ public:
     assert(!empty());
     T* t = head;
     head = (t->*link).p;
-    (t->*link).p = NULL;  
+    (t->*link).p = NULL;
     return t;
   }
 
