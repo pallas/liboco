@@ -15,6 +15,9 @@ PROGRAMS := \
 	rfc862d \
 	#
 
+TESTS := \
+	#
+
 COMMON := \
 	acceptor \
 	connector \
@@ -40,17 +43,26 @@ COMMON := \
 	trigger \
 	#
 
-DEPENDS = $(PROGRAMS:=.d) $(COMMON:=.d)
+DEPENDS = $(PROGRAMS:=.d) $(TESTS:=.d) $(COMMON:=.d)
 -include $(DEPENDS)
 
-OBJECTS = $(PROGRAMS:=.o) $(COMMON:=.o)
+OBJECTS = $(PROGRAMS:=.o) $(TESTS:=.o) $(COMMON:=.o)
 
-$(PROGRAMS) : %: %.o $(COMMON:=.o)
+$(PROGRAMS) $(TESTS) : %: %.o $(COMMON:=.o)
 
 all: $(PROGRAMS)
 
+RUN_TESTS := $(addprefix run/,$(TESTS))
+
+.PHONY: test
+test: $(RUN_TESTS)
+
+.PHONY: $(RUN_TESTS)
+$(RUN_TESTS) : run/%: %
+	./$<
+
 .PHONY: clean
 clean:
-	rm -rf $(PROGRAMS) $(OBJECTS) $(DEPENDS)
+	rm -rf $(PROGRAMS) $(TESTS) $(OBJECTS) $(DEPENDS)
 
 #
