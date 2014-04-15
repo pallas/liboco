@@ -16,6 +16,7 @@ PROGRAMS := \
 	#
 
 TESTS := \
+	test_intrusive \
 	#
 
 COMMON := \
