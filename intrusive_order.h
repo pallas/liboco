@@ -28,9 +28,9 @@ public:
   bool empty() const { return !head; }
 
   intrusive_order & insert(T* t) {
-    assert(NULL == (t->*link).p);
-    if (empty())
-      assert(&head == tail);
+    assert(!(t->*link).bound());
+    assert(!empty() || &head == tail);
+
     if (empty() || !(t->*predicate)(back())) {
       *tail = t;
       tail = &(t->*link).p;
@@ -43,6 +43,8 @@ public:
       (t->*link).p = *c;
       *c = t;
     }
+
+    assert((t->*link).bound());
     assert(!empty());
     return *this;
   }
@@ -69,7 +71,9 @@ public:
 
   T* remove() {
     assert(!empty());
+
     T* t = head;
+    assert((t->*link).bound());
 
     head = *tail != head
          ? (head->*link).p
@@ -79,6 +83,8 @@ public:
       tail = &head;
 
     (t->*link).p = NULL;
+
+    assert(!(t->*link).bound());
     return t;
   }
 
