@@ -25,12 +25,14 @@ public:
   bool empty() const { return !head; }
 
   intrusive_queue & enqueue(T* t) {
-    assert(NULL == (t->*link).p);
-    if (empty())
-      assert(&head == tail);
+    assert(!(t->*link).bound());
+    assert(!empty() || &head == tail);
+
     *tail = t;
     tail = &(t->*link).p;
-    *tail = NULL;
+    *tail = t;
+
+    assert((t->*link).bound());
     assert(!empty());
     return *this;
   }
@@ -42,12 +44,20 @@ public:
 
   T* dequeue() {
     assert(!empty());
-    T* t = head;
 
-    if (!(head = (head->*link).p))
+    T* t = head;
+    assert((t->*link).bound());
+
+    head = *tail != head
+         ? (head->*link).p
+         : NULL;
+
+    if (empty())
       tail = &head;
 
     (t->*link).p = NULL;
+
+    assert(!(t->*link).bound());
     return t;
   }
 
