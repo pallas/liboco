@@ -40,7 +40,7 @@ public:
 
   bool empty() const { return !root_; }
 
-  intrusive_tree & insert(T* t) {
+  intrusive_tree & graft(T* t) {
     assert(valid());
     assert(!is_bound(t));
 
@@ -146,7 +146,7 @@ public:
     return *this;
   }
 
-  T* remove(T* t) {
+  T* prune(T* t) {
     assert(valid());
     assert(!empty());
     assert(is_bound(t));

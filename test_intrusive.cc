@@ -49,7 +49,7 @@ main(int, char*[]) {
   for (unsigned i = 0 ; i < n ; ++i) {
     node* x = new node(lrand48() % n);
 
-    tree.insert(x);
+    tree.graft(x);
 
     switch (x->value % 2) {
     case 0: even.insert(x); break;
@@ -79,7 +79,7 @@ main(int, char*[]) {
     std::cout << ' ' << tree.find(x->value)->value;
 
     assert(tree.is_member(x));
-    tree.remove(x);
+    tree.prune(x);
 
     if (!x->bound())
       delete x;
