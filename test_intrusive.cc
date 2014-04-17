@@ -13,8 +13,6 @@ struct node {
   int value;
   node(int v) : value(v) { }
 
-  bool operator< (const node & o) const { return value < o.value; }
-
   intrusive_tree_link<node> tree_link;
   intrusive_order_link<node> order_link;
   intrusive_queue_link<node> queue_link;
