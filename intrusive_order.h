@@ -38,7 +38,7 @@ public:
     } else {
       T ** c;
       for (c = &head ; c != tail ; c = &((*c)->*link).p)
-        if (t->*key < (*c)->*key)
+        if (!((*c)->*key < t->*key))
           break;
       (t->*link).p = *c;
       *c = t;
