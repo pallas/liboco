@@ -13,7 +13,7 @@ class intrusive_tree_link : private intrusive_link<X> {
 public:
   typedef intrusive_tree_link type;
   template <class T, typename intrusive_tree_link<T>::type T::*link,
-            bool (T::*predicate)(const T &) const>
+            typename K, K T::*key>
     friend class intrusive_tree;
 
   bool bound() const {
@@ -32,7 +32,7 @@ private:
 };
 
 template <class T, typename intrusive_tree_link<T>::type T::*link,
-          bool (T::*predicate)(const T &) const>
+          typename K, K T::*key>
 class intrusive_tree : public do_not_copy {
 public:
   intrusive_tree() : root_(NULL) { }
@@ -47,7 +47,7 @@ public:
     T ** i = &root_;
     while (*i) {
       (t->*link).p.p = *i;
-      i = (t->*predicate)(**i)
+      i = t->*key < (*i)->*key
         ? &((*i)->*link).l.p
         : &((*i)->*link).r.p
         ;
@@ -345,6 +345,22 @@ public:
     return NULL;
   }
 
+  T* find(const K & k) const {
+    T* n = root();
+
+    while (n) {
+      const K & nk = n->*key;
+      switch((nk<k) - (k<nk)) {
+      case -1: n = left(n); break;
+      case  0: return n;
+      case  1: n = right(n); break;
+      default: assert(!"unreachable");
+      }
+    }
+
+    return NULL;
+  }
+
 private:
   T * root_;
 
@@ -593,9 +609,9 @@ private:
         return false;
     }
 
-    if (l && (t->*predicate)(*l))
+    if (l && t->*key < l->*key)
       return false;
-    if (r && (r->*predicate)(*t))
+    if (r && r->*key < t->*key)
       return false;
 
     return valid(l) && valid(r);
