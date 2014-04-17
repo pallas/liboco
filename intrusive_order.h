@@ -12,14 +12,14 @@ template <class X>
 struct intrusive_order_link : private intrusive_link<X> {
   typedef intrusive_order_link type;
   template <class T, typename intrusive_order_link<T>::type T::*link,
-            bool (T::*predicate)(const T &) const>
+            typename K, K T::*key>
     friend class intrusive_order;
 
   bool bound() const { return intrusive_link<X>::p; }
 };
 
 template <class T, typename intrusive_order_link<T>::type T::*link,
-          bool (T::*predicate)(const T &) const>
+          typename K, K T::*key>
 class intrusive_order : public do_not_copy {
 public:
   intrusive_order() : head(NULL), tail(&head) { }
@@ -31,14 +31,14 @@ public:
     assert(!(t->*link).bound());
     assert(!empty() || &head == tail);
 
-    if (empty() || !(t->*predicate)(back())) {
+    if (empty() || !(t->*key < (*tail)->*key)) {
       *tail = t;
       tail = &(t->*link).p;
       *tail = t;
     } else {
       T ** c;
       for (c = &head ; c != tail ; c = &((*c)->*link).p)
-        if ((t->*predicate)(**c))
+        if (t->*key < (*c)->*key)
           break;
       (t->*link).p = *c;
       *c = t;
@@ -93,7 +93,7 @@ public:
     intrusive_order result;
 
     while (!this->empty() && !that.empty())
-      result.insert( (this->front().*predicate)(that.front())
+      result.insert( this->head->*key < that.head->*key
                    ? this->remove()
                    : that.remove() );
 

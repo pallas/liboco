@@ -31,7 +31,7 @@ struct node {
   }
 
   typedef intrusive_tree<node, &node::tree_link, typeof(node::value), &node::value> tree_t;
-  typedef intrusive_order<node, &node::order_link, &node::operator< > order_t;
+  typedef intrusive_order<node, &node::order_link, typeof(node::value), &node::value> order_t;
   typedef intrusive_queue<node, &node::queue_link> queue_t;
   typedef intrusive_stack<node, &node::stack_link> stack_t;
 };
