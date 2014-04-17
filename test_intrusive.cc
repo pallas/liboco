@@ -65,7 +65,7 @@ main(int, char*[]) {
   std::cout << "order";
   for (node* i = tree.min() ; i ; i = tree.next(i)) {
     node* x = all.remove();
-    assert(x == i);
+    assert(x->value == i->value);
     std::cout << ' ' << x->value;
 
     if (!x->bound())
