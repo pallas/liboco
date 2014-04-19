@@ -10,6 +10,9 @@
 #include <cassert>
 #include <cstdlib>
 #include <climits>
+#include <iostream>
+
+#include <netdb.h>
 
 class splice : public task {
 public:
@@ -66,17 +69,45 @@ public:
 };
 
 int main(int argc, char *argv[]) {
-  inet_address addr(7, "127.0.0.1");
+  using namespace std;
 
   file_descriptor(fileno(stdin)).unblock().close_on_exec().release();
   file_descriptor(fileno(stdout)).unblock().close_on_exec().release();
 
-  connector<echo_to_stdout, stdin_to_echo> c(addr);
-  core::instance()
-    .add(c)
-    .react();
+  for (int i = 1 ; i < argc ; ++i) {
+    struct addrinfo hints;
+    struct addrinfo *res = NULL;
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
 
-  return c.dead() ? EXIT_FAILURE : EXIT_SUCCESS;
+    if (int r = getaddrinfo(argv[i], "echo", &hints, &res)) {
+      cerr << argv[i] << ": " << gai_strerror(r) << endl;
+      continue;
+    }
+
+    for (struct addrinfo *re = res ; re ; re = re->ai_next)
+    try {
+      any_address addr(re->ai_addr, re->ai_addrlen);
+      connector<echo_to_stdout, stdin_to_echo> c(addr);
+
+      core::instance()
+        .add(c)
+        .react();
+
+      if (!c.dead()) {
+        freeaddrinfo(res);
+        return EXIT_SUCCESS;
+      }
+
+    } catch (const std::runtime_error & e) {
+      cerr << argv[i] << ": " << e.what() << endl;
+    }
+
+    freeaddrinfo(res);
+  }
+
+  return EXIT_FAILURE;
 }
 
 //
