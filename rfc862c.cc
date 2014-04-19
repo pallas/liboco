@@ -65,9 +65,6 @@ public:
   }
 };
 
-#include "sys/stat.h"
-#include "signal_set.h"
-
 int main(int argc, char *argv[]) {
   inet_address addr(7, "127.0.0.1");
 
