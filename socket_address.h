@@ -48,6 +48,7 @@ public:
   any_address();
 
   any_address(const socket_address &);
+  any_address(const struct sockaddr *, socklen_t);
   any_address & operator=(const socket_address &);
 };
 

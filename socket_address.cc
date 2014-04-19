@@ -33,6 +33,11 @@ any_address::any_address(const socket_address & o) {
   memcpy(&sa, &o.cast(), o.length());
 }
 
+any_address::any_address(const struct sockaddr *addr, socklen_t addrlen) {
+  assert(addrlen <= sizeof sa);
+  memcpy(&sa, addr, addrlen);
+}
+
 any_address &
 any_address::operator=(const socket_address & o) {
   assert(o.length() <= sizeof sa);
