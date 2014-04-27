@@ -20,6 +20,9 @@ namespace {
 #ifdef MAP_UNINITIALIZED
     | MAP_UNINITIALIZED
 #endif
+#ifdef MAP_NORESERVE
+    | MAP_NORESERVE
+#endif
     ;
 };
 
