@@ -3,6 +3,9 @@
 
 #include <cassert>
 #include <cstring>
+#include <cstddef>
+#include <stdint.h>
+#include <unistd.h>
 #include <sys/mman.h>
 
 namespace {
@@ -24,6 +27,12 @@ namespace {
     | MAP_NORESERVE
 #endif
     ;
+
+    static long page_size = sysconf(_SC_PAGE_SIZE);
+
+    void* adjust(void* p, ptrdiff_t d) {
+      return reinterpret_cast<void*>(reinterpret_cast<uintptr_t>(p) + d);
+    }
 };
 
 stack::stack() throw (std::bad_alloc)
@@ -36,10 +45,18 @@ stack::stack() throw (std::bad_alloc)
   ss_sp = mmap(NULL, ss_size, stack_prot, stack_flags, -1, 0);
   if (MAP_FAILED == ss_sp)
     throw std::bad_alloc();
+
+  assert(0 == (page_size & (page_size-1)));
+
+  TRY(mprotect, ss_sp, page_size, PROT_NONE);
+  TRY(mprotect, adjust(ss_sp, (ss_size-1) & ~(page_size-1)), page_size, PROT_NONE);
+
+  ss_sp = adjust(ss_sp, page_size);
+  ss_size -= 2 * page_size;
 }
 
 stack::~stack() {
-  TRY(munmap, ss_sp, ss_size);
+  TRY(munmap, adjust(ss_sp, -page_size), ss_size + 2 * page_size);
   memset(this, 0, sizeof this);
 }
 
