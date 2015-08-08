@@ -17,6 +17,7 @@ PROGRAMS := \
 
 TESTS := \
 	test_intrusive \
+	test_semaphore \
 	#
 
 COMMON := \
@@ -34,6 +35,7 @@ COMMON := \
 	local_address \
 	reactor \
 	scheduler \
+	semaphore \
 	signaler \
 	signal_set \
 	signal_suppressor \
