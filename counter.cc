@@ -29,6 +29,7 @@ counter::operator()() {
       continue;
     }
     assert(r == sizeof c);
+    assert(c);
     on_count(c);
   }
 }
