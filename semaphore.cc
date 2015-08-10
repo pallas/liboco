@@ -44,7 +44,7 @@ semaphore::signal() {
       w = TRY_ERR(EAGAIN, write, x.fd(), &c, sizeof c);
     } while (w < 0);
   }
-  assert (w == sizeof c);
+  assert(w == sizeof c);
 }
 
 //
