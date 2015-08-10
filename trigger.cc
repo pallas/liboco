@@ -34,8 +34,7 @@ int trigger::dup() const { return file_descriptor::dup(fd_); }
 
 basic_context *
 trigger::wait_for_read() {
-  if (!armed())
-    arm();
+  arm();
   ev_.events = EPOLLRDHUP|EPOLLIN|EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
   return static_cast<basic_context*>(this);
@@ -43,8 +42,7 @@ trigger::wait_for_read() {
 
 basic_context *
 trigger::wait_for_write() {
-  if (!armed())
-    arm();
+  arm();
   ev_.events = EPOLLOUT|EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
   return static_cast<basic_context*>(this);
@@ -52,8 +50,7 @@ trigger::wait_for_write() {
 
 basic_context *
 trigger::wait_for_error() {
-  if (!armed())
-    arm();
+  arm();
   ev_.events = EPOLLRDHUP|EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
   return static_cast<basic_context*>(this);
@@ -61,8 +58,7 @@ trigger::wait_for_error() {
 
 basic_context *
 trigger::wait_for_nothing() {
-  if (armed())
-    disarm();
+  disarm();
   ev_.events = EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
   return static_cast<basic_context*>(this);
@@ -70,8 +66,7 @@ trigger::wait_for_nothing() {
 
 basic_context *
 trigger::wait_for_anything() {
-  if (!armed())
-    arm();
+  arm();
   ev_.events = EPOLLRDHUP|EPOLLIN|EPOLLOUT|EPOLLONESHOT;
   TRY(epoll_ctl, reactor::instance().fd, EPOLL_CTL_MOD, fd_, &ev_);
   return static_cast<basic_context*>(this);
