@@ -3,6 +3,7 @@
 #include "try.h"
 
 #include "core.h"
+#include "scheduler.h"
 
 #include <cassert>
 #include <unistd.h>
@@ -23,16 +24,27 @@ void
 semaphore::wait() {
   count_t c = 0;
   int r = TRY_ERR(EAGAIN, read, t.fd(), &c, sizeof c);
+
   if (r < 0) {
-    trigger x(t.dup());
+    basic_context current;
     do {
-      core::wait_for_read(x);
-      r = TRY_ERR(EAGAIN, read, x.fd(), &c, sizeof c);
+      if (!t.armed()) {
+        core::wait_for_read(t);
+      } else {
+        q.enqueue(&current);
+        scheduler::instance().defer(&current);
+      }
+      r = TRY_ERR(EAGAIN, read, t.fd(), &c, sizeof c);
     } while (r < 0);
   }
+
   assert(r == sizeof c);
   assert(c == 1);
+
+  if (!t.armed() && !q.empty())
+    scheduler::instance().refer(q.dequeue());
 }
+
 void
 semaphore::signal() {
   count_t c = 1;

@@ -16,6 +16,7 @@ public:
 
 private:
   trigger t;
+  context::queue q;
 };
 
 #endif//SEMAPHORE_H
