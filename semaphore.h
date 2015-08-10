@@ -2,6 +2,7 @@
 #define SEMAPHORE_H
 
 #include "trigger.h"
+#include "context.h"
 
 #include <stdint.h>
 
