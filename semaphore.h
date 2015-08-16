@@ -13,10 +13,21 @@ public:
 
   semaphore(count_t = 1);
 
+  class lock : public do_not_copy {
+  public:
+    lock(semaphore &);
+    ~lock();
+
+  private:
+    semaphore & s;
+  };
+
+  friend class lock;
+
+private:
   void wait();
   void signal();
 
-private:
   trigger t;
   context::queue q;
 };

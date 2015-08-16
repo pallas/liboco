@@ -59,4 +59,7 @@ semaphore::signal() {
   assert(w == sizeof c);
 }
 
+semaphore::lock::lock(semaphore & _) : s(_) { s.wait(); }
+semaphore::lock::~lock() { s.signal(); }
+
 //

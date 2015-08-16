@@ -16,14 +16,13 @@ public:
     if (rand() > (RAND_MAX/2))
       core::instance().schedule();
 
-    s.wait();
+    semaphore::lock l(s);
     const unsigned n = 8;
     for (unsigned i = 0 ; i < n ; ++i) {
       std::cout << this << " #" << i << std::endl;
       if (rand() > (RAND_MAX/2))
         core::instance().schedule();
     }
-    s.signal();
   }
 
 private:
