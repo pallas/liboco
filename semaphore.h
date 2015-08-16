@@ -3,10 +3,11 @@
 
 #include "trigger.h"
 #include "context.h"
+#include "do_not_copy.h"
 
 #include <stdint.h>
 
-class semaphore {
+class semaphore : public do_not_copy {
 public:
   typedef uint64_t count_t;
 
