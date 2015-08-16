@@ -1,6 +1,5 @@
 #include "core.h"
 
-#include "killer.h"
 #include "semaphore.h"
 
 #include <cassert>
