@@ -13,7 +13,7 @@ on a very modern kernel.
 It is also not very safe regarding signals that are not processed via
 signalfd.  In particular, calling core::schedule or core::wait_for_* with
 any pending signals that were not blocked when core::react was invoked are
-likely to handled at that time.  Signal masks should not be modified from
+likely to be handled at that time.  Signal masks should not be modified from
 within tasks.
 
 It comes with the following example programs.
