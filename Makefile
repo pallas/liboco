@@ -27,6 +27,7 @@ COMMON := \
 	core \
 	counter \
 	demangler \
+	duration \
 	file_descriptor \
 	inet6_address \
 	inet_address \
