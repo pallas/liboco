@@ -18,6 +18,7 @@ PROGRAMS := \
 TESTS := \
 	test_intrusive \
 	test_semaphore \
+	test_timers \
 	#
 
 COMMON := \
@@ -44,6 +45,7 @@ COMMON := \
 	socket_address \
 	stack \
 	task \
+	timer \
 	trigger \
 	#
 
