@@ -16,7 +16,6 @@ PROGRAMS := \
 	#
 
 TESTS := \
-	test_intrusive \
 	test_semaphore \
 	test_timers \
 	#

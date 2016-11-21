@@ -1,7 +1,7 @@
 #ifndef RESOURCE_LIMIT_H
 #define RESOURCE_LIMIT_H
 
-#include "try.h"
+#include <lace/try.h>
 #include <cassert>
 #include <sys/resource.h>
 

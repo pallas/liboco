@@ -1,6 +1,6 @@
 #include "core.h"
 
-#include "try.h"
+#include <lace/try.h>
 
 #include "context.h"
 #include "reactor.h"
@@ -20,7 +20,7 @@
 
 namespace {
 
-  class queue : public singleton<queue>, public context::queue { };
+  class queue : public lace::singleton<queue>, public context::queue { };
 
 }
 

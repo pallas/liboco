@@ -1,6 +1,6 @@
 #include "scheduler.h"
 
-#include "try.h"
+#include <lace/try.h>
 #include "context.h"
 #include "demangler.h"
 

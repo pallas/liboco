@@ -1,6 +1,6 @@
 #include "counter.h"
 
-#include "try.h"
+#include <lace/try.h>
 
 #include "core.h"
 

@@ -1,14 +1,14 @@
 #ifndef DEMANGLER_H
 #define DEMANGLER_H
 
-#include "singleton.h"
+#include <lace/singleton.h>
 
 #include <string>
 #include <cstddef>
 
-class demangler : public singleton<demangler> {
+class demangler : public lace::singleton<demangler> {
 
-  friend class singleton<demangler>;
+  friend class lace::singleton<demangler>;
   demangler();
 
 public:

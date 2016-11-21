@@ -3,14 +3,13 @@
 
 #include "task.h"
 #include "context.h"
-#include "singleton.h"
-#include "intrusive_queue.h"
+#include <lace/singleton.h>
 
 #include <ucontext.h>
 
-class scheduler : public singleton<scheduler> {
+class scheduler : public lace::singleton<scheduler> {
 
-  friend class singleton<scheduler>;
+  friend class lace::singleton<scheduler>;
   scheduler();
 
 public:

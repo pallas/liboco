@@ -1,7 +1,7 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include "singleton.h"
+#include <lace/singleton.h>
 
 #include "killer.h"
 
@@ -10,9 +10,9 @@
 class task;
 class trigger;
 
-class core : public singleton<core> {
+class core : public lace::singleton<core> {
 
-  friend class singleton<core>;
+  friend class lace::singleton<core>;
   core();
 
 public:

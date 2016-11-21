@@ -1,7 +1,6 @@
 #ifndef TRIGGER_H
 #define TRIGGER_H
 
-#include "do_not_copy.h"
 #include "file_descriptor.h"
 #include "context.h"
 

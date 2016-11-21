@@ -1,6 +1,6 @@
 #include "connector.h"
 
-#include "try.h"
+#include <lace/try.h>
 
 #include <sys/socket.h>
 

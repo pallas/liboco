@@ -1,7 +1,7 @@
 #ifndef KILLER_H
 #define KILLER_H
 
-#include "intrusive_stack.h"
+#include <lite/stack.h>
 
 class killable;
 
@@ -21,10 +21,10 @@ private:
     mark(killable &);
 
     killable & k;
-    intrusive_stack_link<mark>::type link;
+    lite::stack_link<mark>::type link;
   };
 
-  intrusive_stack<mark, &mark::link> hitlist;
+  lite::stack<mark, &mark::link> hitlist;
 };
 
 #endif//KILLER_H

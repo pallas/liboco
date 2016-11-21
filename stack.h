@@ -4,9 +4,9 @@
 #include <new>
 #include <signal.h>
 
-#include "do_not_copy.h"
+#include <lace/do_not_copy.h>
 
-class stack : public stack_t, public do_not_copy {
+class stack : public stack_t, public lace::do_not_copy {
 public:
   stack() throw (std::bad_alloc);
   ~stack();

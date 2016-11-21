@@ -1,6 +1,6 @@
 #include "signal_suppressor.h"
 
-#include "try.h"
+#include <lace/try.h>
 
 #include <cassert>
 #include <cstddef>

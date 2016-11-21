@@ -1,6 +1,6 @@
 #include "signal_set.h"
 
-#include "try.h"
+#include <lace/try.h>
 
 #include <cassert>
 

@@ -1,5 +1,5 @@
 // rfc862 tcp echo daemon
-#include "try.h"
+#include <lace/try.h>
 #include "core.h"
 
 #include "killer.h"

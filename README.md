@@ -5,6 +5,11 @@ liboco is a simple cooperative multitasking event framework written in C++
 as an exercise for the author.  It is not meant as a replacement for
 libpthread, libevent, libev, &c.
 
+Requires
+
+ * [libace](https://github.com/pallas/libace)
+ * [libite](https://github.com/pallas/libite)
+
 Based around ucontext and epoll, it is not currently intended to be
 portable.  In fact, it uses glibc extensions and Linux-specific system
 calls, so it will probably only compile with that standard library and run

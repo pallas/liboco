@@ -1,6 +1,6 @@
 #include "file_descriptor.h"
 
-#include "try.h"
+#include <lace/try.h>
 
 #include <cassert>
 #include <unistd.h>

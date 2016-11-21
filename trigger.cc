@@ -1,6 +1,6 @@
 #include "trigger.h"
 
-#include "try.h"
+#include <lace/try.h>
 #include "reactor.h"
 
 #include <cassert>

@@ -4,7 +4,7 @@
 
 #include <sys/resource.h>
 
-#include "try.h"
+#include <lace/try.h>
 
 int main(int argc, char *argv[]) {
   struct rlimit rl;

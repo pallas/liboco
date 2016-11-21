@@ -2,15 +2,14 @@
 #define REACTOR_H
 
 #include "context.h"
-#include "do_not_copy.h"
-#include "singleton.h"
+#include <lace/singleton.h>
 #include "file_descriptor.h"
 
 class trigger;
 
-class reactor : public singleton<reactor> {
+class reactor : public lace::singleton<reactor> {
 
-  friend class singleton<reactor>;
+  friend class lace::singleton<reactor>;
   reactor();
 
 public:
