@@ -67,7 +67,7 @@ stack::~stack() {
   memset(this, 0, sizeof this);
 }
 
-void * stack::base() { return ss_sp; }
+void * stack::base() const { return ss_sp; }
 std::size_t stack::size() const { return ss_size; }
 
 //

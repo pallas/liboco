@@ -11,7 +11,7 @@ public:
   stack() throw (std::bad_alloc);
   ~stack();
 
-  void * base();
+  void * base() const;
   std::size_t size() const;
 
   template <class T>
