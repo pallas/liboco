@@ -8,6 +8,7 @@
 #include "signal_set.h"
 #include "simple_task.h"
 #include "inet_address.h"
+#include "signal_killer.h"
 #include "socket_address.h"
 #include "resource_limit.h"
 #include "file_descriptor.h"
@@ -40,17 +41,6 @@ public:
   }
 };
 
-
-class signal_killer : public signaler, public killer {
-public:
-  signal_killer(const signal_set & ss)
-    : signaler(ss)
-  { }
-
-  void on_signal(const info_t &) {
-    killer::killall();
-  }
-};
 
 int main(int argc, char *argv[]) {
   core & c = core::instance();
