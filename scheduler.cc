@@ -23,7 +23,7 @@ namespace {
 
       uc_link = NULL;
     }
-    char nirvana[MINSIGSTKSZ]; // or SIGSTKSZ?
+    char nirvana[SIGSTKSZ];
   } shiva;
 
   extern "C" void mukti(context * atman) { delete atman; }
