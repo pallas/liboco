@@ -40,6 +40,7 @@ COMMON := \
 	signaler \
 	signal_killer \
 	signal_set \
+	signal_stack \
 	signal_suppressor \
 	simple_task \
 	socket_address \
