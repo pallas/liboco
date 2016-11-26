@@ -7,6 +7,7 @@
 #include "trigger.h"
 #include "scheduler.h"
 #include "signal_set.h"
+#include "signal_stack.h"
 #include "file_descriptor.h"
 #include "signal_suppressor.h"
 
@@ -34,6 +35,11 @@ core::core()
 { }
 
 core &
+core::current() {
+  return *reinterpret_cast<core*>(signal_stack::current().cookie);
+}
+
+core &
 core::add(task & t) {
   scheduler::instance().add(t);
   return *this;
@@ -51,7 +57,11 @@ core::react() {
   reactor & r = reactor::instance();
   scheduler & s = scheduler::instance();
 
+  signal_stack ss;
+  ss.cookie = this;
+
   while (!s.done()) {
+    assert(&core::current() == this);
     s.run();
     if (!s.active())
       passive_tasks.killall();
@@ -60,6 +70,8 @@ core::react() {
     if (!q.empty())
       s.transfer(q);
   }
+
+  assert(&core::current() == this);
 }
 
 unsigned core::events() const { return events_; }
@@ -73,7 +85,8 @@ unsigned core::canceled() const { return canceled_; }
 
 void
 core::schedule() {
-  ++core::instance().schedules_;
+  assert(&core::instance() == &core::current());
+  ++core::current().schedules_;
 
   basic_context c;
   queue::instance().enqueue(&c);
@@ -82,31 +95,36 @@ core::schedule() {
 
 void
 core::wait_for_read(trigger & t) {
-  ++core::instance().read_waits_;
+  assert(&core::instance() == &core::current());
+  ++core::current().read_waits_;
   scheduler::instance().defer(t.wait_for_read());
 }
 
 void
 core::wait_for_write(trigger & t) {
-  ++core::instance().write_waits_;
+  assert(&core::instance() == &core::current());
+  ++core::current().write_waits_;
   scheduler::instance().defer(t.wait_for_write());
 }
 
 void
 core::wait_for_error(trigger & t) {
-  ++core::instance().error_waits_;
+  assert(&core::instance() == &core::current());
+  ++core::current().error_waits_;
   scheduler::instance().defer(t.wait_for_error());
 }
 
 void
 core::wait_for_nothing(trigger & t) {
-  ++core::instance().canceled_;
+  assert(&core::instance() == &core::current());
+  ++core::current().canceled_;
   scheduler::instance().refer(t.wait_for_nothing());
 }
 
 void
 core::wait_for_anything(trigger & t) {
-  ++core::instance().generic_waits_;
+  assert(&core::instance() == &core::current());
+  ++core::current().generic_waits_;
   scheduler::instance().defer(t.wait_for_anything());
 }
 

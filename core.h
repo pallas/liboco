@@ -17,6 +17,8 @@ class core : public lace::singleton<core> {
 
 public:
 
+  static core & current();
+
   core & add(task &);
   core & own(task *);
 
