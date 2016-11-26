@@ -5,7 +5,7 @@
 
 #include <cassert>
 
-signal_stack::signal_stack()
+signal_stack::signal_stack() : cookie(NULL)
 {
   ss_sp = space;
   ss_size = sizeof space;

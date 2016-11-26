@@ -14,9 +14,10 @@ public:
   void * base() const;
   std::size_t size() const;
 
-private:
+  void * cookie;
   static signal_stack & current();
 
+private:
   stack_t save;
   unsigned char space[SIGSTKSZ];
 };
