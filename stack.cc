@@ -42,11 +42,14 @@ stack::stack() throw (std::bad_alloc)
   ss_size = stack_size;
   assert(MINSIGSTKSZ <= ss_size);
 
+  assert(0 == (page_size & (page_size-1)));
+
+  ss_size += 2 * page_size;
+
   ss_sp = mmap(NULL, ss_size, stack_prot, stack_flags, -1, 0);
   if (MAP_FAILED == ss_sp)
     throw std::bad_alloc();
 
-  assert(0 == (page_size & (page_size-1)));
 
   TRY(mprotect, ss_sp, page_size, PROT_NONE);
   TRY(mprotect, adjust(ss_sp, (ss_size-1) & ~(page_size-1)), page_size, PROT_NONE);
