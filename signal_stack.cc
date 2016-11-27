@@ -5,6 +5,17 @@
 
 #include <cassert>
 
+namespace {
+  bool stack_is_current(const stack_t & self) {
+    stack_t test;
+    TRY(::sigaltstack, NULL, &test);
+    return true
+        && test.ss_sp == self.ss_sp
+        && test.ss_size == self.ss_size
+        ;;
+  }
+}
+
 signal_stack::signal_stack() : cookie(NULL)
 {
   ss_sp = space;
@@ -18,9 +29,8 @@ signal_stack::signal_stack() : cookie(NULL)
 }
 
 signal_stack::~signal_stack() {
-  stack_t test;
-  TRY(::sigaltstack, &save, &test);
-  assert(test.ss_sp == ss_sp);
+  assert(stack_is_current(*this));
+  TRY(::sigaltstack, &save, NULL);
   memset(static_cast<stack_t*>(this), 0, sizeof(stack_t));
 }
 
