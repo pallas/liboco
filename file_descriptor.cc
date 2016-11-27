@@ -128,7 +128,7 @@ file_descriptor::dup(int ofd) {
   bool cloexec = FD_CLOEXEC & flags;
   int nfd = TRY_ERR(EINVAL, fcntl, ofd, cloexec ? F_DUPFD_CLOEXEC : F_DUPFD);
   if (nfd < 0)
-    nfd = TRY(dup, ofd);
+    nfd = TRY(::dup, ofd);
   if (flags)
     set_flags(nfd, flags, false);
   return nfd;
