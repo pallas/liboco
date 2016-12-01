@@ -6,6 +6,8 @@
 
 #include <sys/epoll.h>
 
+class reactor;
+
 class trigger : public basic_context {
 public:
   explicit trigger(int); // takes ownership
@@ -35,6 +37,8 @@ private:
 
   file_descriptor fd_;
   struct epoll_event ev_;
+
+  reactor * r_;
 };
 
 #endif//TRIGGER_H
