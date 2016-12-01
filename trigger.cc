@@ -11,7 +11,6 @@ trigger::trigger(int fd)
 {
   ev_.events = EPOLLONESHOT;
   ev_.data.ptr = NULL;
-  (void)reactor::instance();
 }
 
 trigger::trigger(const file_descriptor & fd)
@@ -19,7 +18,6 @@ trigger::trigger(const file_descriptor & fd)
 {
   ev_.events = EPOLLONESHOT;
   ev_.data.ptr = NULL;
-  (void)reactor::instance();
 }
 
 trigger::~trigger() { }
