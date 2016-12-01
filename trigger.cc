@@ -7,26 +7,26 @@
 #include <unistd.h>
 
 trigger::trigger(int fd)
-  : fd_(fd), r_(&reactor::instance())
+  : fd_(fd), r_(NULL)
 {
   ev_.events = EPOLLONESHOT;
   ev_.data.ptr = NULL;
-  TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_ADD, fd_, &ev_);
-  ++r_->total_triggers;
+  (void)reactor::instance();
 }
 
 trigger::trigger(const file_descriptor & fd)
-  : fd_(fd), r_(&reactor::instance())
+  : fd_(fd), r_(NULL)
 {
   ev_.events = EPOLLONESHOT;
   ev_.data.ptr = NULL;
-  TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_ADD, fd_, &ev_);
-  ++r_->total_triggers;
+  (void)reactor::instance();
 }
 
 trigger::~trigger() {
-  TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_DEL, fd_, &ev_);
-  --r_->total_triggers;
+  if (r_) {
+    TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_DEL, fd_, &ev_);
+    --r_->total_triggers;
+  }
 }
 
 int trigger::fd() const { return fd_; }
@@ -95,6 +95,11 @@ void
 trigger::arm() {
   assert(!armed());
   ev_.data.ptr = this;
+  if (!r_) {
+    r_ = &reactor::instance();
+    TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_ADD, fd_, &ev_);
+    ++r_->total_triggers;
+  }
   ++r_->armed_triggers;
   assert(armed());
 }
@@ -103,6 +108,7 @@ void
 trigger::disarm() {
   assert(armed());
   ev_.data.ptr = NULL;
+  assert(r_);
   --r_->armed_triggers;
   assert(!armed());
 }
