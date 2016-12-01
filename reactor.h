@@ -21,12 +21,9 @@ public:
   int poll(context::queue &);
   int wait(context::queue &);
 
-  unsigned triggers() const;
-
 private:
   const file_descriptor fd;
 
-  unsigned total_triggers;
   unsigned armed_triggers;
   friend class trigger;
 };

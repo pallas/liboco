@@ -23,10 +23,7 @@ trigger::trigger(const file_descriptor & fd)
 }
 
 trigger::~trigger() {
-  if (r_) {
-    TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_DEL, fd_, &ev_);
-    --r_->total_triggers;
-  }
+  if (r_) TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_DEL, fd_, &ev_);
 }
 
 int trigger::fd() const { return fd_; }
@@ -98,7 +95,6 @@ trigger::arm() {
   if (!r_) {
     r_ = &reactor::instance();
     TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_ADD, fd_, &ev_);
-    ++r_->total_triggers;
   }
   ++r_->armed_triggers;
   assert(armed());

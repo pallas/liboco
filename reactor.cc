@@ -9,17 +9,12 @@
 
 reactor::reactor()
   : fd(file_descriptor(TRY(epoll_create1, EPOLL_CLOEXEC)))
-  , total_triggers(0)
   , armed_triggers(0)
 { }
 
-reactor::~reactor() {
-  assert(alone());
-  assert(!armed());
-}
+reactor::~reactor() { assert(!armed()); }
 
 bool reactor::armed() const { return armed_triggers; }
-bool reactor::alone() const { return !total_triggers; }
 
 namespace {
   int
@@ -66,11 +61,6 @@ reactor::wait(context::queue & q) {
     n += poll(q);
 
   return n;
-}
-
-unsigned
-reactor::triggers() const {
-  return total_triggers;
 }
 
 //
