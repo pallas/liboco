@@ -22,9 +22,7 @@ trigger::trigger(const file_descriptor & fd)
   (void)reactor::instance();
 }
 
-trigger::~trigger() {
-  if (r_) TRY_ERR(EPERM, epoll_ctl, r_->fd, EPOLL_CTL_DEL, fd_, &ev_);
-}
+trigger::~trigger() { }
 
 int trigger::fd() const { return fd_; }
 int trigger::dup() const { return file_descriptor::dup(fd_); }
