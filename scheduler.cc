@@ -9,6 +9,7 @@
 #include <iostream>
 #include <typeinfo>
 #include <stdexcept>
+#include <signal.h>
 
 namespace {
 
