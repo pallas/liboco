@@ -63,7 +63,7 @@ stack::stack()
 }
 
 stack::~stack() {
-  TRY(munmap, adjust(ss_sp, -page_size), ss_size + 2 * page_size);
+  TRY_ABORT(munmap, adjust(ss_sp, -page_size), ss_size + 2 * page_size);
   memset(this, 0, sizeof this);
 }
 

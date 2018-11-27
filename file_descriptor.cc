@@ -62,7 +62,7 @@ file_descriptor::file_descriptor(const file_descriptor & o)
 
 file_descriptor::~file_descriptor() {
   if (valid())
-    TRY(close, fd);
+    TRY_ABORT(close, fd);
 }
 
 file_descriptor &

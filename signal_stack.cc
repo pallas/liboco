@@ -30,7 +30,7 @@ signal_stack::signal_stack() : cookie(NULL)
 
 signal_stack::~signal_stack() {
   assert(stack_is_current(*this));
-  TRY(::sigaltstack, &save, NULL);
+  TRY_ABORT(::sigaltstack, &save, NULL);
   memset(static_cast<stack_t*>(this), 0, sizeof(stack_t));
 }
 
