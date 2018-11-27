@@ -8,18 +8,23 @@
 
 #include <iostream>
 
+#include <lace/random.h>
+#include <lace/singleton.h>
+
+lace::random & rng = lace::singleton<lace::random>().instance();
+
 class exclusive_task : public task {
 public:
 
   void operator() () {
-    if (rand() > (RAND_MAX/2))
+    if (rng.l() >= 0)
       core::instance().schedule();
 
     semaphore::lock l(s);
     const unsigned n = 8;
     for (unsigned i = 0 ; i < n ; ++i) {
       std::cout << this << " #" << i << std::endl;
-      if (rand() > (RAND_MAX/2))
+      if (rng.l() >= 0)
         core::instance().schedule();
     }
   }
@@ -31,8 +36,6 @@ private:
 semaphore exclusive_task::s;
 
 int main(int argc, char *argv[]) {
-  srand(getpid());
-
   core & c = core::instance();
 
   c.own(new exclusive_task)
