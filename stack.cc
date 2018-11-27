@@ -36,7 +36,7 @@ namespace {
     }
 };
 
-stack::stack() throw (std::bad_alloc)
+stack::stack()
 {
   ss_flags = 0;
 

@@ -8,7 +8,7 @@
 
 class stack : public stack_t, public lace::do_not_copy {
 public:
-  stack() throw (std::bad_alloc);
+  stack();
   ~stack();
 
   void * base() const;
