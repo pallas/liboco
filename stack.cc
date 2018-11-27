@@ -64,7 +64,7 @@ stack::stack()
 
 stack::~stack() {
   TRY_ABORT(munmap, adjust(ss_sp, -page_size), ss_size + 2 * page_size);
-  memset(this, 0, sizeof this);
+  memset(this, 0, sizeof *this);
 }
 
 void * stack::base() const { return ss_sp; }
