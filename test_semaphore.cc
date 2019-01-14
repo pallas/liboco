@@ -11,7 +11,7 @@
 #include <lace/random.h>
 #include <lace/singleton.h>
 
-lace::random & rng = lace::singleton<lace::random>().instance();
+lace::random & rng = lace::singleton<lace::random>::instance();
 
 class exclusive_task : public task {
 public:
