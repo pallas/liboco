@@ -1,4 +1,13 @@
-liboco
+## Deprecated
+
+See
+[ioucontext](https://github.com/pallas/ioucontext),
+a coöperative multitasking library based on
+[liburing](https://github.com/axboe/liburing)
+and written in C.
+
+======
+# liboco
 ======
 
 liboco is a simple cooperative multitasking event framework written in C++
